@@ -54,7 +54,7 @@ jobs:
                 name: Push docker image
                 command: |
                     env
-                    TAG=git describe --abbrev=0
+                    TAG=`git describe --abbrev=0`
                     docker tag u6kapps/sample-circleci-2.0 u6kapps/sample-circleci-2.0:${TAG}
                     docker images
 workflows:

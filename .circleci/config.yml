@@ -6,4 +6,4 @@ jobs:
             - image: docker:17.07.0-ce
         steps:
             - checkout
-            - run: echo "hello world"
+            - run: docker build -t u6kapps/sample-circleci-2.0 .

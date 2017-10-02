@@ -1,7 +1,8 @@
 version: 2
 jobs:
     build:
-        machine: true
+        docker:
+            - image: docker:17.07.0-ce
         steps:
             - checkout
             - setup_remote_docker:
@@ -10,7 +11,8 @@ jobs:
                 name: Build docker image
                 command: docker build -t u6kapps/sample-circleci-2.0 .
     test:
-        machine: true
+        docker:
+            - image: docker:17.07.0-ce
         steps:
             - checkout
             - setup_remote_docker:

@@ -10,6 +10,14 @@ jobs:
             - run:
                 name: Build docker image
                 command: docker build -t u6kapps/sample-circleci-2.0 .
+            - run:
+                name: Save docker image
+                command: |
+                    mkdir -p ~/caches
+                    docker save u6kapps/sample-circleci-2.0 -o ~/caches/image.tar
+            - save_cache:
+                key: docker-{{ checksum "~/caches/image.tar" }}
+                paths: ~/caches/image.tar
     test:
         docker:
             - image: docker:17.07.0-ce
@@ -17,6 +25,12 @@ jobs:
             - checkout
             - setup_remote_docker:
                 version: 17.07.0-ce
+            - restore_cache:
+                key: docker-{{ checksum "~/caches/image.tar" }}
+                paths: ~/caches/image.tar
+            - run:
+                name: Load docker image
+                command: docker load -i ~/caches/image.tar
             - run:
                 name: Test docker image
                 command: docker run --rm u6kapps/sample-circleci-2.0

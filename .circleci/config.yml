@@ -2,7 +2,7 @@ version: 2
 jobs:
     build:
         docker:
-            - image: docker:17.07.0-ce
+            - image: docker:17.07.0-ce-git
         steps:
             - checkout
             - setup_remote_docker:
@@ -21,7 +21,7 @@ jobs:
                     - ~/caches/image.tar
     test:
         docker:
-            - image: docker:17.07.0-ce
+            - image: docker:17.07.0-ce-git
         steps:
             - checkout
             - setup_remote_docker:

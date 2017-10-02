@@ -50,7 +50,7 @@ workflows:
             - build
             - push:
                 requires:
-                    - push
+                    - build
                 filters:
                     branches:
                         only: master

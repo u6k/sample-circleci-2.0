@@ -54,6 +54,7 @@ jobs:
                 name: Push docker image
                 command: |
                     echo ${CIRCLE_TAG}
+                    env
 workflows:
     version: 2
     build-and-deploy:

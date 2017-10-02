@@ -23,11 +23,11 @@ jobs:
             - image: docker:17.07.0-ce
         steps:
             - checkout
-            - setup_remote_docker:
-                version: 17.07.0-ce
             - restore_cache:
                 key: docker-{{ checksum "~/caches/image.tar" }}
                 paths: ~/caches/image.tar
+            - setup_remote_docker:
+                version: 17.07.0-ce
             - run:
                 name: Load docker image
                 command: docker load -i ~/caches/image.tar

@@ -1,8 +1,9 @@
 version: 2
 jobs:
     build:
+        working_directory: ~/build
         docker:
-            - image: circleci/<language>:<version TAG>
+            - image: docker:17.07.0-ce
         steps:
             - checkout
             - run: echo "hello world"

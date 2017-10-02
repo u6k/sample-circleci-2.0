@@ -1,50 +1,8 @@
 version: 2
 jobs:
     build:
-        working_directory: ~/build
         docker:
-            - image: docker:17.07.0-ce
+            - image: circleci/<language>:<version TAG>
         steps:
             - checkout
-            - setup_remote_docker:
-                version: 17.07.0-ce
-            - run:
-                name: Build docker image
-                command: docker build -t u6kapps/sample-circleci-2.0 .
-    test:
-        working_directory: ~/test
-        docker:
-            - image: docker:17.07.0-ce
-        steps:
-            - setup_remote_docker:
-                version: 17.07.0-ce
-            - run:
-                name: Test docker image
-                command: docker run --rm u6kapps/sample-circleci-2.0
-    deploy:
-        working_directory: ~/deploy
-        docker:
-            - image: docker:17.07.0-ce
-        steps:
-            - setup_remote_docker:
-                version: 17.07.0-ce
-            - run:
-                name: Push docker image
-                command: |
-                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                    docker tag u6kapps/sample-circleci-2.0:${CIRCLE_TAG}
-                    docker push u6kapps/sample-circleci-2.0
-workflows:
-    version: 2
-    build-and-deploy:
-        jobs:
-            - build:
-            - test:
-                requires:
-                    - build
-            - deploy:
-                requires:
-                    - test
-                filters:
-                    tags:
-                        only: /.*/
+            - run: echo "hello world"

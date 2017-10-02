@@ -11,6 +11,9 @@ jobs:
                 name: Build docker image
                 command: docker build -t u6kapps/sample-circleci-2.0 .
             - run:
+                name: Test docker image
+                command: docker run u6kapps/sample-circleci-2.0
+            - run:
                 name: Save docker image
                 command: |
                     mkdir -p ~/caches
@@ -19,23 +22,6 @@ jobs:
                 key: docker-{{ .Revision }}
                 paths:
                     - ~/caches/image.tar
-    test:
-        docker:
-            - image: docker:17.07.0-ce-git
-        steps:
-            - checkout
-            - setup_remote_docker:
-                version: 17.07.0-ce
-            - restore_cache:
-                key: docker-{{ .Revision }}
-                paths:
-                    - ~/caches/image.tar
-            - run:
-                name: Load docker image
-                command: docker load -i ~/caches/image.tar
-            - run:
-                name: Test docker image
-                command: docker run --rm u6kapps/sample-circleci-2.0
     push:
         docker:
             - image: docker:17.07.0-ce-git
@@ -53,21 +39,18 @@ jobs:
             - run:
                 name: Push docker image
                 command: |
-                    env
                     TAG=`git describe --abbrev=0`
+                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
                     docker tag u6kapps/sample-circleci-2.0 u6kapps/sample-circleci-2.0:${TAG}
-                    docker images
+                    docker push u6kapps/sample-circleci-2.0
 workflows:
     version: 2
-    build-and-deploy:
+    build-and-push:
         jobs:
             - build
-            - test:
-                requires:
-                    - build
             - push:
                 requires:
-                    - test
+                    - push
                 filters:
                     branches:
                         only: master

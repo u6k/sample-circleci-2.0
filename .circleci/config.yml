@@ -53,8 +53,10 @@ jobs:
             - run:
                 name: Push docker image
                 command: |
-                    echo ${CIRCLE_TAG}
                     env
+                    TAG=git describe --abbrev=0
+                    docker tag u6kapps/sample-circleci-2.0 u6kapps/sample-circleci-2.0:${TAG}
+                    docker images
 workflows:
     version: 2
     build-and-deploy:
@@ -67,7 +69,5 @@ workflows:
                 requires:
                     - test
                 filters:
-                    tags:
-                        only: /.*/
                     branches:
-                        ignore: /.*/
+                        only: master

@@ -6,4 +6,6 @@ jobs:
             - image: docker:17.07.0-ce
         steps:
             - checkout
+            - setup_remote_docker:
+                version: 17.07.0-ce
             - run: docker build -t u6kapps/sample-circleci-2.0 .
